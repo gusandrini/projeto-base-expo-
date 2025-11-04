@@ -1,24 +1,37 @@
-# 📱 Projeto Base - Expo
+# 🚀 Base Template React Native (Expo + TypeScript)
 
-Template inicial para criação de projetos **React Native com Expo**, já preparado para desenvolvimento multiplataforma (Android, iOS e Web).
+Template inicial para desenvolvimento de aplicativos **React Native com Expo**, preparado para Android, iOS e Web.  
+Inclui estrutura modular, suporte a tema claro/escuro, internacionalização, navegação global (Header/Footer) e Context API.
 
 ---
 
-## 🚀 **Como Iniciar o Projeto**
+## 🧩 Sumário
+1. [Como Iniciar o Projeto](#como-iniciar-o-projeto)
+2. [Como Rodar o Projeto (Mobile)](#como-rodar-o-projeto-mobile)
+3. [Estrutura de Pastas](#estrutura-de-pastas)
+4. [Documentação Técnica — Estrutura e Fluxo](#documentação-técnica--estrutura-e-fluxo)
+5. [Boas Práticas e Dicas](#boas-práticas-e-dicas)
+6. [Repositórios e Deploys](#repositórios-e-deploys)
+7. [Stack Utilizada](#stack-utilizada)
+8. [Autores](#autores)
 
-### Criar novo projeto
+---
+
+## 🚀 Como Iniciar o Projeto
+
+### 🏗️ Criar novo projeto
 ```bash
 npx create-expo-app@latest nome-do-projeto
 ```
 
-### Instalar dependências
+### 📦 Instalar dependências
 ```bash
 npm install
 ```
 
 ---
 
-## ▶️ **Como Rodar o Projeto (Mobile)**
+## ▶️ Como Rodar o Projeto (Mobile)
 
 ### 1️⃣ Clonar o repositório
 ```bash
@@ -37,21 +50,18 @@ npx expo start
 ```
 
 **Atalhos rápidos:**  
-📱 Android → `a`  
-🍎 iOS → `i`  
-🌐 Web → `w`
+📱 Android → `a` | 🍎 iOS → `i` | 🌐 Web → `w`
 
 > ⚠️ No iOS, certifique-se de que o **Expo Go** e o computador estejam na **mesma rede Wi-Fi**.
 
 ---
 
-## 🗂️ **Estrutura de Pastas (Mobile)**
+## 🗂️ Estrutura de Pastas
 
 ```
 base/
 │
 ├── android/              # Configurações específicas do Android
-│
 ├── assets/               # Ícones, imagens e fontes
 │
 ├── scripts/
@@ -61,20 +71,21 @@ base/
 │   ├── api/              # Axios + endpoints da API
 │   ├── components/       # Componentes reutilizáveis (Header, Footer, etc.)
 │   ├── context/          # Contextos globais (ex: ThemeContext)
-│   ├── i18n/             # Internacionalização (pt-BR, es-ES)
+│   ├── i18n/             # Internacionalização (pt-BR, es-ES, en-US)
 │   ├── images/           # Logos e imagens locais
 │   ├── models/           # Tipos e interfaces TypeScript
-│   ├── screens/          # Telas principais (Login, Cliente, Moto, etc.)
+│   ├── navigation/       # Estrutura de navegação (Stack, Tabs)
+│   ├── screens/          # Telas principais (Login, Cadastro, Home, etc.)
 │   ├── services/         # Providers e serviços (ex: autenticação)
+│   ├── styles/           # Estilos centralizados (screens/components)
 │   ├── theme/            # Paleta de cores e estilos globais
-│   └── Notificacao.ts    # Funções de notificação push/local
+│   └── utils/            # Funções auxiliares
 │
 ├── App.tsx
 ├── app.json
 ├── eas.json
 ├── index.tsx
 ├── package.json
-├── package-lock.json
 └── tsconfig.json
 ```
 
@@ -82,29 +93,19 @@ base/
 
 # 🧭 Documentação Técnica — Estrutura e Fluxo do App Base
 
-## 📚 Sumário
-1. [Visão Geral](#visão-geral)  
-2. [Fluxo de Inicialização](#fluxo-de-inicialização)  
-3. [Camadas e Responsabilidades](#camadas-e-responsabilidades)  
-4. [Hierarquia de Componentes](#hierarquia-de-componentes)  
-5. [Como o Tema e Contextos se Propagam](#como-o-tema-e-contextos-se-propagam)  
-6. [Navegação (Header + Footer)](#navegação-header--footer)  
-7. [Resumo Visual (Diagrama)](#resumo-visual-diagrama)  
-8. [Boas Práticas e Extensões Futuras](#boas-práticas-e-extensões-futuras)
+## 📚 Visão Geral
 
----
+Projeto estruturado como uma **base reutilizável** para aplicações React Native com Expo, utilizando:
 
-## 1️⃣ Visão Geral
-
-Este projeto foi estruturado como uma **base reutilizável** para aplicações React Native com Expo, utilizando:
-
-- **React Navigation** (Stack e Tabs)  
-- **Context API** (para tema, idioma e sessão)  
-- **Arquitetura modular** (providers, navigation, screens e styles separados)  
+- **React Navigation** (Stack + Tabs)  
+- **Context API** (tema, idioma e sessão)  
+- **Arquitetura modular** (providers, navigation, screens e styles)  
 - **Tema claro e escuro dinâmico**  
 - **Header e Footer globais integrados à navegação**  
 
 ---
+
+## ⚙️ Fluxo de Inicialização
 
 ## 2️⃣ Fluxo de Inicialização
 
@@ -427,11 +428,15 @@ Melhora legibilidade e evita caminhos relativos longos.
 ✅ **Tema global coerente**  
 Definir paleta única em `theme/theme.ts` (light/dark).
 
+✅ **Controle de versão** — sempre `git pull` antes de desenvolver. 
+
 ✅ **Extensões sugeridas:**
 - Adicionar contexto de autenticação (`AuthContext`) para login/logout.
 - Adicionar `NotificationsContext` para centralizar push notifications.
 - Criar `useAppConfig()` para variáveis globais (ex: URL da API).
 - Implementar modo “offline” com AsyncStorage.
+ 
+ 
 
 ---
 
@@ -447,7 +452,7 @@ Esse fluxo garante:
 
 ---
 
-## 🔗 **Repositórios e Deploys**
+## 🔗 Repositórios e Deploys
 
 | Tipo | Link |
 |------|------|
@@ -459,31 +464,19 @@ Esse fluxo garante:
 
 ---
 
-## 🧰 **Stack Utilizada**
+## 🧰 Stack Utilizada
 
-- **React Native (Expo SDK mais recente)**  
-- **TypeScript**  
-- **Axios** para consumo de API  
-- **Context API** para gerenciamento de estado  
-- **i18n-js** para tradução e suporte multilíngue  
-- **Expo Notifications** (push/local)  
-- **EAS Build** para deploy e distribuição  
-- **Firebase App Distribution** para testes internos  
-
----
-
-## 💡 **Dicas e Boas Práticas**
-
-- Sempre execute `npm install` após clonar ou atualizar o repositório.  
-- Use `git pull` antes de começar a programar, garantindo que está com a versão mais recente.  
-- Ao atualizar o código, gere um novo build com:
-  ```bash
-  npx expo build:android
-  ```
-- Configure variáveis sensíveis no arquivo `.env` (não versionado).  
+- ⚛️ **React Native (Expo SDK mais recente)**  
+- 📘 **TypeScript**  
+- 🌐 **Axios** para consumo de API  
+- 🎨 **Context API** para gerenciamento de estado global  
+- 🌍 **i18n-js** para tradução e suporte multilíngue  
+- 🔔 **Expo Notifications** (push/local)  
+- 🧱 **EAS Build** para deploy e distribuição  
+- 🔥 **Firebase App Distribution** para testes internos  
 
 ---
 
-## 👥 **Autores**
+## 👥 Autores
 
-Projeto mantido por [Gustavo Sandrini](https://github.com/gusandrini) 
+Projeto mantido por [**Gustavo Sandrini**](https://github.com/gusandrini)  
