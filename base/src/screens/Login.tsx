@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
   TextInput,
   View,
   TouchableOpacity,
@@ -12,14 +11,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { useSession } from '../services/SessionProvider';
-import { useTheme } from '../context/ThemeContext';
+
+import { useSession } from '@/services/SessionProvider';
+import { useTheme } from '@/context/ThemeContext';
 import { scheduleLoginNotification } from '@/Notificacao';
 import { useI18n } from '@/i18n/I18nProvider';
 
+import { styles } from '@/styles/screens/Login';
+
 export default function Login({ navigation }: any) {
   const { login } = useSession();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
   const { t, locale, setLocale } = useI18n();
 
   const [email, setEmail] = useState('');
@@ -68,17 +70,22 @@ export default function Login({ navigation }: any) {
   }
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.background }]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.colors.background }]}>
       <View style={styles.container}>
-        <Text style={[styles.title, { color: theme.primary }]}>{t('login.title')}</Text>
-        <Text style={[styles.subtitle, { color: theme.text }]}>{t('login.subtitle')}</Text>
+        <Text style={[styles.title, { color: theme.colors.primary }]}>{t('login.title')}</Text>
+        <Text style={[styles.subtitle, { color: theme.colors.text }]}>{t('login.subtitle')}</Text>
 
-        <View style={[styles.inputContainer, { borderColor: theme.primary }]}>
-          <Ionicons name="mail-outline" size={20} color={theme.primary} style={styles.icon} />
+        <View
+          style={[
+            styles.inputContainer,
+            { borderColor: theme.colors.border, backgroundColor: theme.colors.surface },
+          ]}
+        >
+          <Ionicons name="mail-outline" size={20} color={theme.colors.primary} style={styles.icon} />
           <TextInput
-            style={[styles.input, { color: theme.text }]}
+            style={[styles.input, { color: theme.colors.text }]}
             placeholder={t('login.placeholders.email')}
-            placeholderTextColor="#888"
+            placeholderTextColor={theme.colors.mutedText}
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
@@ -87,12 +94,17 @@ export default function Login({ navigation }: any) {
           />
         </View>
 
-        <View style={[styles.inputContainer, { borderColor: theme.primary }]}>
-          <Ionicons name="lock-closed-outline" size={20} color={theme.primary} style={styles.icon} />
+        <View
+          style={[
+            styles.inputContainer,
+            { borderColor: theme.colors.border, backgroundColor: theme.colors.surface },
+          ]}
+        >
+          <Ionicons name="lock-closed-outline" size={20} color={theme.colors.primary} style={styles.icon} />
           <TextInput
-            style={[styles.input, { color: theme.text }]}
+            style={[styles.input, { color: theme.colors.text }]}
             placeholder={t('login.placeholders.password')}
-            placeholderTextColor="#888"
+            placeholderTextColor={theme.colors.mutedText}
             secureTextEntry
             value={password}
             onChangeText={setPassword}
@@ -100,42 +112,40 @@ export default function Login({ navigation }: any) {
         </View>
 
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: theme.primary }]}
+          style={[styles.button, { backgroundColor: theme.colors.primary }]}
           onPress={handleLogin}
           activeOpacity={0.85}
+          disabled={loading}
         >
-          <Ionicons name="log-in-outline" size={22} color="#fff" />
-          <Text style={styles.buttonText}>{t('login.actions.enter')}</Text>
+          <Ionicons name="log-in-outline" size={22} color={theme.colors.primaryText} />
+          <Text style={[styles.buttonText, { color: theme.colors.primaryText }]}>
+            {t('login.actions.enter')}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.registerButton}
-          onPress={() => navigation.navigate('CadastroFuncionario')}
+          // Ajuste o nome da rota conforme seu Tab/Stack. Se a tela estiver registrada como "Cadastro", use "Cadastro".
+          onPress={() => navigation.navigate('Cadastro')}
         >
-          <Text style={[styles.registerText, { color: theme.primary }]}>
+          <Text style={[styles.registerText, { color: theme.colors.primary }]}>
             {t('login.actions.register')}
           </Text>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20, gap: 12 }}>
+        <View style={styles.switchRow}>
           {/* Botão de tema */}
-          <TouchableOpacity style={styles.themeButton} onPress={toggleTheme} activeOpacity={0.7}>
-            <Ionicons
-              name={theme.background === '#000' ? 'sunny-outline' : 'moon-outline'}
-              size={18}
-              color={theme.text}
-            />
-            <Text style={[styles.themeText, { color: theme.text }]}>
-              {theme.background === '#000'
-                ? t('home.theme.lightMode')
-                : t('home.theme.darkMode')}
+          <TouchableOpacity style={[styles.switchBtn, { backgroundColor: theme.colors.surface }]} onPress={toggleTheme} activeOpacity={0.7}>
+            <Ionicons name={isDark ? 'sunny-outline' : 'moon-outline'} size={18} color={theme.colors.text} />
+            <Text style={[styles.switchText, { color: theme.colors.text }]}>
+              {isDark ? t('home.theme.lightMode') : t('home.theme.darkMode')}
             </Text>
           </TouchableOpacity>
 
           {/* Botão de idioma */}
-          <TouchableOpacity style={styles.themeButton} onPress={toggleLanguage} activeOpacity={0.7}>
-            <Ionicons name="language-outline" size={18} color={theme.text} />
-            <Text style={[styles.themeText, { color: theme.text }]}>
+          <TouchableOpacity style={[styles.switchBtn, { backgroundColor: theme.colors.surface }]} onPress={toggleLanguage} activeOpacity={0.7}>
+            <Ionicons name="language-outline" size={18} color={theme.colors.text} />
+            <Text style={[styles.switchText, { color: theme.colors.text }]}>
               {locale === 'pt-BR'
                 ? t('home.language.portugueseShort')
                 : t('home.language.spanishShort')}
@@ -146,74 +156,10 @@ export default function Login({ navigation }: any) {
 
       <Modal transparent visible={loading} animationType="fade">
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.primary} />
-          <Text style={[styles.loadingText, { color: theme.text }]}>
-            {t('login.loading')}
-          </Text>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={[styles.loadingText, { color: '#fff' }]}>{t('login.loading')}</Text>
         </View>
       </Modal>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: { flex: 1 },
-  container: { flex: 1, justifyContent: 'center', padding: 32 },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1.2,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    marginBottom: 18,
-    height: 52,
-  },
-  icon: { marginRight: 8 },
-  input: { flex: 1, fontSize: 16, height: '100%' },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginTop: 10,
-    elevation: 2,
-  },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: '600', marginLeft: 8 },
-  registerButton: { marginTop: 18, alignItems: 'center' },
-  registerText: { fontSize: 15, fontWeight: '500' },
-  themeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.05)',
-  },
-  themeText: { marginLeft: 6, fontSize: 14 },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: '#757575',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 18,
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
-});
